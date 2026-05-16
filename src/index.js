@@ -4,7 +4,8 @@ import "./styles.css";
 
 const weatherForm = document.querySelector("#weather-form");
 const locationInput = document.querySelector("#location-input");
-// const weatherResult = document.querySelector("#weather-result");
+const weatherResult = document.querySelector("#weather-result");
+
 
 async function getWeather(location) {
   const apiKey = "TRSB28M3K6CGPVNY9Z42XGCTP";
@@ -15,7 +16,9 @@ async function getWeather(location) {
 
   const weatherData = await response.json();
 
-  console.log(weatherData);
+  const processedData = processWeatherData(weatherData);
+
+  console.log(processedData);
 }
 
 weatherForm.addEventListener("submit", (event) => {
@@ -25,3 +28,17 @@ weatherForm.addEventListener("submit", (event) => {
 
   getWeather(location);
 });
+
+
+function processWeatherData(data) {
+  const {
+    resolvedAddress,
+    currentConditions,
+  } = data;
+
+  return {
+    location: resolvedAddress,
+    temperature: currentConditions.temp,
+    conditions: currentConditions.conditions,
+  }
+};
